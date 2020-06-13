@@ -1,0 +1,17 @@
+{% extends "template.html" %}
+{%block title %}Cantones de Limon{%endblock %}
+{%block content %}
+    <table cellpadding="5" align="left">
+           <tr>
+               <td>
+                   <h3 align="center"><a href="/provincias">Regresar a Provincias</a></h3>
+                    <table align="center" border="1" cellpadding="5">
+                        <tr><td>Codigo</td><td>Nombre</td></tr>
+                        {% for dict in data %}
+                        <tr><td align="center">{{ dict['codigo'] }}</td><td><a href="{{ dict['nombre'] }}">{{ dict['nombre'] }}</a></td></tr>
+                        {% endfor %}
+                    </table>
+               </td>
+           </tr>
+    </table>
+{%endblock %}

@@ -1,0 +1,17 @@
+{% extends "template.html" %}
+{%block title %}Distritos del canton Central{%endblock %}
+{%block content %}
+    <table cellpadding="5" align="left">
+           <tr>
+               <td>
+                   <h3 align="center"><a href="/SAN JOSE">Regresar a cantones de San Jose</a></h3>
+                    <table align="center" border="1" cellpadding="5">
+                        <tr><td>Provincia</td><td>Canton</td><td>Distrito</td><td>Nombre</td></tr>
+                        {% for dict in data %}
+                        <tr><td align="center">{{ dict['provincia'] }}</td><td>{{ dict['canton'] }}</td><td>{{ dict['codigo'] }}</td><td><a href="{{ dict['nombre'] }}">{{ dict['nombre'] }}</a></td></tr>
+                        {% endfor %}
+                    </table>
+               </td>
+           </tr>
+    </table>
+{%endblock %}

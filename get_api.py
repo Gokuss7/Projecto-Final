@@ -3,17 +3,21 @@ from flask_api import status
 import configparser
 import psycopg2
 
+
 app = Flask(__name__)
 config = configparser.ConfigParser()
 config.read('padronapi.ini')
 cnx=psycopg2.connect(dbname=config['DB']['name'], user=config['DB']['user'], password=config['DB']['password'], host=config['DB']['host'], port=config['DB']['port'])
 cur=cnx.cursor()
 
-@app.route('/')
+#Pagina de Inicio
+@app.route('/', methods=["GET", "POST"])
 def index():
     return render_template('home.html')
 
-@app.route('/api/v1/provincias',methods=['POST', 'GET', 'DELETE', 'PUT'])
+
+#Pagina de Provincias
+@app.route('/api/provincias',methods=['POST', 'GET', 'DELETE', 'PUT'])
 def provincias():
     if request.method == 'GET':
         cur.execute("SELECT * FROM provincia;")
@@ -24,12 +28,14 @@ def provincias():
                 'nombre': provincia[1]
             }
             dataJson.append(dataDict)
+
         return jsonify(dataJson), status.HTTP_200_OK
+
     else :
         content = {'Error de método': 'Sólo se soporta GET para provincias'}
         return content, status.HTTP_405_METHOD_NOT_ALLOWED
 
-@app.route('/api/v1/provincia/<string:codigo>',methods=['POST', 'GET', 'DELETE', 'PUT'])
+@app.route('/api/provincia/<string:codigo>',methods=['POST', 'GET', 'DELETE', 'PUT'])
 def provincia(codigo):
     if request.method == 'GET':
         cur.execute("SELECT * FROM provincia WHERE codigo=%s;",(codigo,))
@@ -47,7 +53,7 @@ def provincia(codigo):
         content = {'Error de método': 'Sólo se soporta GET para provincia'}
         return content, status.HTTP_405_METHOD_NOT_ALLOWED
 
-@app.route('/api/v1/cantones',methods=['POST', 'GET', 'DELETE', 'PUT'])
+@app.route('/api/cantones',methods=['POST', 'GET', 'DELETE', 'PUT'])
 def cantones():
     if request.method == 'GET':
         cur.execute("SELECT * FROM canton;")
@@ -65,7 +71,7 @@ def cantones():
         content = {'Error de método': 'Sólo se soporta GET para cantones'}
         return content, status.HTTP_405_METHOD_NOT_ALLOWED
 
-@app.route('/api/v1/canton/<string:codigo>',methods=['POST', 'GET', 'DELETE', 'PUT'])
+@app.route('/api/canton/<string:codigo>',methods=['POST', 'GET', 'DELETE', 'PUT'])
 def canton(codigo):
     if request.method == 'GET':
         cur.execute("SELECT * FROM canton WHERE codigo=%s;",(codigo,))
@@ -85,7 +91,7 @@ def canton(codigo):
         return content, status.HTTP_405_METHOD_NOT_ALLOWED
 
 
-@app.route('/api/v1/distrito/<string:codigo>',methods=['POST', 'GET', 'DELETE', 'PUT'])
+@app.route('/api/distrito/<string:codigo>',methods=['POST', 'GET', 'DELETE', 'PUT'])
 def distrito(codigo):
     if request.method == 'GET':
         cur.execute("SELECT * FROM distrito WHERE codigo=%s;",(codigo,))
@@ -105,7 +111,7 @@ def distrito(codigo):
         content = {'Error de método': 'Sólo se soporta GET para distrito'}
         return content, status.HTTP_405_METHOD_NOT_ALLOWED
 
-@app.route('/api/v1/distritos',methods=['POST', 'GET', 'DELETE', 'PUT'])
+@app.route('/api/distritos',methods=['POST', 'GET', 'DELETE', 'PUT'])
 def distritos():
     if request.method == 'GET':
         cur.execute("SELECT * FROM distrito;")
